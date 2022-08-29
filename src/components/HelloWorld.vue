@@ -31,10 +31,32 @@
 </template>
 
 <script>
+import * as IPFS from "ipfs-core";
+import OrbitDB from "orbit-db";
+import Identities from "orbit-db-identity-provider";
+import { ethers } from "ethers";
+
+
 export default {
   name: 'HelloWorld',
   props: {
     msg: String
+  },
+  async mounted() {
+    const ipfs = await IPFS.create();
+    const orbitdb = await OrbitDB.createInstance(ipfs)
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    await provider.send("eth_requestAccounts", []);
+    const wallet = provider.getSigner();
+
+    const identity = await Identities.createIdentity({
+      type: "ethereum",
+      wallet
+  });
+    
+    const db = await orbitdb.keyvalue('first-database', { identity: identity });
+
+    console.log("mounted", ipfs, provider, identity, db);
   }
 }
 </script>

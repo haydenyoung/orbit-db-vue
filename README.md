@@ -1,5 +1,9 @@
 # profile-legacy
 
+This is a simple example of Orbit DB running in a Vue application. The database instance is owned by an Ethereum-based wallet.
+
+This project was created with the legacy vue-cli.  
+
 ## Project setup
 ```
 npm install
